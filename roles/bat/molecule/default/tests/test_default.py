@@ -11,15 +11,14 @@ def test_smoke(host, user):
     )
 
     assert cmd.rc == 0
-    assert cmd.stdout == "bat 0.24.0 (fc95468)\n"
+    assert cmd.stdout == "bat 0.26.1 (979ba22)\n"
 
 
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "bat", "0.24"),
-        ("debian", "bullseye", "bat", "0.24"),
-        ("debian", "bookworm", "bat", "0.24"),
+        ("debian", "trixie", "bat", "0.26.1"),
+        ("debian", "bookworm", "bat", "0.26.1"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):

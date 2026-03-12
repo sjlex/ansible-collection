@@ -25,7 +25,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: sjlex.bat, bat_package_version: '0.23.0' }
+         - { role: sjlex.bat, bat_package_version: '0.26.1' }
 
 License
 -------
