@@ -16,13 +16,10 @@ platforms:
     image: "python:3.13.0-bullseye"
     pre_build_image: true
 
-  # Debian 10 - Buster
-  - name: role-broot_debian10_${MOLECULE_INSTANCE_ID}
-    image: "python:3.11.4-buster"
-    pre_build_image: true
-
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../../"
 
 verifier:
   name: testinfra

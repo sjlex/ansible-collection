@@ -20,15 +20,10 @@ platforms:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # Debian 10 - Buster
-  - name: role-docker_debian10_${MOLECULE_INSTANCE_ID}
-    image: "python:3.11.4-buster"
-    pre_build_image: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../../"
 
 verifier:
   name: testinfra
