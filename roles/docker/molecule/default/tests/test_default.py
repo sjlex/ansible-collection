@@ -5,7 +5,7 @@ import pytest
 def test_smoke(host, user):
     cmd = host.run(
         f"su - {user} -c %s",
-        """/;
+        """
         docker --version &&
         docker run --rm hello-world
         """,
@@ -17,9 +17,8 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "docker-ce", "5:26.1"),
-        ("debian", "bullseye", "docker-ce", "5:27.3"),
-        ("debian", "bookworm", "docker-ce", "5:27.3"),
+        ("debian", "trixie", "docker-ce", "5:29.3"),
+        ("debian", "bookworm", "docker-ce", "5:29.3"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):
