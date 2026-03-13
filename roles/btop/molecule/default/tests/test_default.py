@@ -1,4 +1,5 @@
 import pytest
+import re
 
 
 @pytest.mark.parametrize("user", ["root", "ansible"])
@@ -16,9 +17,8 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "btop", "1.2.13"),
-        ("debian", "bullseye", "btop", "1.2.13"),
-        ("debian", "bookworm", "btop", "1.2.13"),
+        ("debian", "trixie", "btop", "1.4.6"),
+        ("debian", "bookworm", "btop", "1.4.6"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):
@@ -29,4 +29,6 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
         cmd = host.run_test("btop --version")
 
         assert cmd.rc == 0
-        assert cmd.stdout.startswith(f"btop version: {package_version}\n")
+
+        clean_stdout = re.sub(r'\x1b\[[0-9;]*m', '', cmd.stdout)
+        assert f"btop version: {package_version}" in clean_stdout

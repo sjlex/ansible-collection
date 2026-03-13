@@ -1,13 +1,16 @@
 ---
 - name: "Get __btop_is_installed"
   block:
-    - name: "Check if btop is installed"
-      ansible.builtin.shell: |
-        which btop
-      register: __btop_is_installed
+    - name: "Get current btop version"
+      ansible.builtin.command: "btop --version"
+      register: __btop_version_check
+      changed_when: false
       failed_when: false
-      changed_when: "__btop_is_installed.rc >= 1"
 
-    - name: "Set facts"
+    - name: "Set facts for version comparison"
       ansible.builtin.set_fact:
-        __btop_is_installed: "{{ not __btop_is_installed.rc }}"
+        __btop_is_installed: >-
+          {{
+            __btop_version_check.rc == 0 and
+            btop_package_version in __btop_version_check.stdout
+          }}
