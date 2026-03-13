@@ -4,6 +4,6 @@
   remote_user: "ansible"
 
   tasks:
-    - name: "Include exa"
+    - name: "Include eza"
       ansible.builtin.include_role:
-        name: "exa"
+        name: "eza"

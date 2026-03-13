@@ -1,0 +1,7 @@
+---
+# vars file for eza
+
+__eza_package_name: "eza"
+__eza_packages:
+  - "{{ __eza_package_name }}"
+__eza_dependencies: []

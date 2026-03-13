@@ -6,7 +6,7 @@ def test_smoke(host, user):
     cmd = host.run(
         f"su - {user} -c %s",
         """/;
-        exa --version
+        eza --version
         """,
     )
 
@@ -16,9 +16,8 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "exa", "0.8"),
-        ("debian", "bullseye", "exa", "0.9"),
-        ("debian", "bookworm", "exa", "0.10"),
+        ("debian", "trixie", "eza", "0.23.4"),
+        ("debian", "bookworm", "eza", "0.23.4"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):

@@ -1,7 +1,7 @@
 galaxy_info:
-  role_name: exa
+  role_name: eza
   author: sjlex
-  description: An Ansible role to install and configure exa.
+  description: An Ansible role to install and configure eza.
   license: MIT
 
   min_ansible_version: "2.1"
@@ -9,11 +9,10 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
+      - trixie
       - bookworm
-      - bullseye
-      - buster
 
   galaxy_tags:
-    - exa
+    - eza
 
 dependencies: []

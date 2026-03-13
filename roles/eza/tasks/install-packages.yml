@@ -1,0 +1,59 @@
+---
+- name: "Set up the repository"
+  become: true
+  become_user: root
+  block:
+    - name: "Ensure keyrings directory exists"
+      ansible.builtin.file:
+        path: "{{ eza_key_path | dirname }}"
+        state: directory
+        mode: '0755'
+
+    - name: "Download eza GPG key to a temporary file"
+      ansible.builtin.get_url:
+        url: "{{ eza_key_url }}"
+        dest: "/tmp/eza.asc"
+        mode: '0644'
+      changed_when: false
+
+    - name: "Verify GPG key fingerprint"
+      ansible.builtin.command: "gpg --show-keys --with-fingerprint --with-colons /tmp/eza.asc"
+      register: __eza_key_info
+      changed_when: false
+      failed_when: eza_key_id | lower not in __eza_key_info.stdout | lower
+
+    - name: "Dearmor and install GPG key"
+      ansible.builtin.shell: "cat /tmp/eza.asc | gpg --dearmor -o {{ eza_key_path }}"
+      args:
+        creates: "{{ eza_key_path }}"
+
+    - name: "Remove temporary key file"
+      ansible.builtin.file:
+        path: "/tmp/eza.asc"
+        state: absent
+      changed_when: false
+
+    - name: "Install dependencies for deb822_repository"
+      ansible.builtin.apt:
+        name: python3-debian
+        state: present
+        update_cache: true
+
+    - name: "Add eza repository (DEB822)"
+      ansible.builtin.deb822_repository:
+        name: gierens
+        types: [deb]
+        uris: ["{{ eza_repo_url }}"]
+        suites: [stable]
+        components: [main]
+        signed_by: "{{ eza_key_path }}"
+        state: present
+
+- name: "Install eza"
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop: "{{ __eza_packages }}"
