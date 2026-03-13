@@ -16,9 +16,8 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "broot", "1.44.2"),
-        ("debian", "bullseye", "broot", "1.44.2"),
-        ("debian", "bookworm", "broot", "1.44.2"),
+        ("debian", "trixie", "broot", "1.55.0"),
+        ("debian", "bookworm", "broot", "1.55.0"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):
@@ -45,5 +44,21 @@ def test_config(host, user, config_path):
     assert config.is_file
     assert config.size > 0
     assert config.user == user
-    assert config.contains('default_flags: "hip"')
-    assert config.contains("modal: true")
+    assert config.contains('default_flags: "-hipg"')
+    assert config.contains("file: skins/dark-void.hjson")
+
+
+@pytest.mark.parametrize(
+    "user,config_path",
+    [
+        ("ansible", "/home/ansible/.config/broot/verbs.hjson"),
+        ("ansible", "/home/ansible/.config/broot/skins/dark-void.hjson"),
+    ],
+)
+def test_configs(host, user, config_path):
+    config = host.file(config_path)
+
+    assert config.exists
+    assert config.is_file
+    assert config.size > 0
+    assert config.user == user
