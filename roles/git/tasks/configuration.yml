@@ -3,10 +3,10 @@
   ansible.builtin.template:
     src: .gitconfig.j2
     dest: '{{ ansible_facts["env"]["HOME"] }}/.gitconfig'
-    mode: 0644
+    mode: "0644"
 
 - name: "Copy .gitignore"
   ansible.builtin.copy:
     src: .gitignore
     dest: '{{ ansible_facts["env"]["HOME"] }}/.gitignore'
-    mode: 0644
+    mode: "0644"

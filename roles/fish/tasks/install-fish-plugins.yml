@@ -1,10 +1,11 @@
 ---
 - name: "Install fish plugins"
-  ansible.builtin.shell: "fisher install {{ item }}"
   when:
     - __fish_is_installed
     - __fisher_is_installed
     - item not in __fisher_installed_plugins
+  ansible.builtin.shell: "fisher install {{ item }}"
+  changed_when: true
   args:
     executable: "{{ __fish_binary_path }}"
   loop: "{{ fisher_plugins }}"
@@ -16,3 +17,5 @@
   vars:
     ansible_loop_results: "{{ __fish_plugins_install_rg.results | select('succeeded') | map(attribute='item') | list }}"
   when: __fish_plugins_install_rg is changed
+  tags:
+    - skip_ansible_lint

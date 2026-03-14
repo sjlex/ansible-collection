@@ -213,6 +213,7 @@ tasks:
         ansible-lint
           --config-file .ansible-lint.yml
           --exclude molecule.yml
+          --offline
           {{.ROOT_DIR}}/*
           {{.CLI_ARGS}}
 
@@ -228,8 +229,7 @@ tasks:
     desc: "Reformat (ruff)"
     cmds:
       - poetry run
-        ruff
-          --fix
+        ruff check --fix
           {{.ROOT_DIR}}
           {{.CLI_ARGS}}
 

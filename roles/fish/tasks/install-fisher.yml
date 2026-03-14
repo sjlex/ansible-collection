@@ -17,6 +17,7 @@
       args:
         executable: "{{ __fish_binary_path }}"
       register: __fisher_install_res
+      changed_when: true
 
     - name: "Update fisher fact after install"
       ansible.builtin.set_fact:

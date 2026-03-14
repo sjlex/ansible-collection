@@ -13,12 +13,12 @@
   ansible.builtin.copy:
     src: 3.2/htoprc
     dest: '{{ ansible_facts["env"]["HOME"] }}/.config/htop/'
-    mode: 0644
+    mode: "0644"
   when: __htop_installed_version.startswith("3.2")
 
 - name: "Copy htoprc (htop 3.4.*)"
   ansible.builtin.copy:
     src: 3.4.1/htoprc
     dest: '{{ ansible_facts["env"]["HOME"] }}/.config/htop/'
-    mode: 0644
+    mode: "0644"
   when: __htop_installed_version.startswith("3.4")

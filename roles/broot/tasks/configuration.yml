@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: '{{ ansible_facts["env"]["HOME"] }}/.config/broot'
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: "Copy conf.hjson"
   ansible.builtin.copy:

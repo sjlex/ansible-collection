@@ -25,7 +25,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: sjlex.lazydocker, lazydocker_package_version: '0.20.0' }
+         - { role: sjlex.lazydocker, lazydocker_package_version: '0.24.4' }
 
 License
 -------

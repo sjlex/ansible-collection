@@ -1,5 +1,6 @@
-import pytest
 import re
+
+import pytest
 
 
 @pytest.mark.parametrize("user", ["root", "ansible"])
@@ -30,5 +31,5 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
 
         assert cmd.rc == 0
 
-        clean_stdout = re.sub(r'\x1b\[[0-9;]*m', '', cmd.stdout)
+        clean_stdout = re.sub(r"\x1b\[[0-9;]*m", "", cmd.stdout)
         assert f"btop version: {package_version}" in clean_stdout

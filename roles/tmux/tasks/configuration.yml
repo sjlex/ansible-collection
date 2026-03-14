@@ -3,7 +3,7 @@
   ansible.builtin.copy:
     src: tmux
     dest: '{{ ansible_facts["env"]["HOME"] }}/.config/'
-    mode: 0644
+    mode: "0644"
 
 - name: "Create a symbolic link"
   ansible.builtin.file:

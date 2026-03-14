@@ -22,7 +22,7 @@
             src: "{{ btop_package_url }}"
             dest: "/tmp/"
             remote_src: true
-            mode: 0777
+            mode: "0777"
 
         - name: "Install btop"
           become: true

@@ -7,7 +7,7 @@
       ansible.builtin.file:
         path: "{{ fish_key_path | dirname }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: "Download fish GPG key to a temporary file"
       ansible.builtin.get_url:
@@ -23,8 +23,9 @@
       failed_when: fish_key_id | lower not in __fish_key_info.stdout | lower
 
     - name: "Dearmor and install GPG key"
-      ansible.builtin.shell: "cat /tmp/fish.asc | gpg --dearmor -o {{ fish_key_path }}"
+      ansible.builtin.shell: "set -o pipefail && cat /tmp/fish.asc | gpg --dearmor -o {{ fish_key_path }}"
       args:
+        executable: /bin/bash
         creates: "{{ fish_key_path }}"
 
     - name: "Remove temporary key file"
