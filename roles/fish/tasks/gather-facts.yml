@@ -1,0 +1,39 @@
+---
+- name: "Check if fish is installed"
+  ansible.builtin.command: "which fish"
+  register: __fish_binary_check
+  changed_when: false
+  failed_when: false
+
+- name: "Set installation fact"
+  ansible.builtin.set_fact:
+    __fish_is_installed: "{{ __fish_binary_check.rc == 0 }}"
+    __fisher_is_installed: false
+
+- name: "Check fisher and plugins"
+  when: __fish_is_installed
+  block:
+    - name: "Check if fisher is installed"
+      ansible.builtin.shell: "fisher --version"
+      args:
+        executable: "/usr/bin/fish"
+      register: __fisher_version_check
+      changed_when: false
+      failed_when: false
+
+    - name: "Set fisher installation fact"
+      ansible.builtin.set_fact:
+        __fisher_is_installed: "{{ __fisher_version_check.rc == 0 }}"
+
+    - name: "Get installed plugins"
+      when: __fisher_is_installed
+      ansible.builtin.shell: "fisher list"
+      args:
+        executable: "/usr/bin/fish"
+      register: __fisher_plugins_list
+      changed_when: false
+      failed_when: false
+
+    - name: "Set installed plugins fact"
+      ansible.builtin.set_fact:
+        __fisher_installed_plugins: "{{ __fisher_plugins_list.stdout_lines | default([]) }}"
