@@ -6,7 +6,7 @@ def test_smoke(host, user):
     cmd = host.run(
         f"su - {user} -c %s",
         """/;
-        mc --version
+        TERM=xterm mc --version
         """,
     )
 
@@ -16,8 +16,7 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "mc", "3:4.8"),
-        ("debian", "bullseye", "mc", "3:4.8"),
+        ("debian", "trixie", "mc", "3:4.8.33"),
         ("debian", "bookworm", "mc", "3:4.8"),
     ],
 )
