@@ -17,8 +17,7 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "git", "1:2"),
-        ("debian", "bullseye", "git", "1:2"),
+        ("debian", "trixie", "git", "1:2"),
         ("debian", "bookworm", "git", "1:2"),
     ],
 )

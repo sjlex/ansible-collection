@@ -1,5 +1,5 @@
 [core]
-  excludesfile = {{ ansible_env["HOME"] }}/.gitignore
+  excludesfile = {{ ansible_facts["env"]["HOME"] }}/.gitignore
 {% if git_core_autocrlf != '' %}
   autocrlf = {{ git_core_autocrlf }}
 {% endif %}

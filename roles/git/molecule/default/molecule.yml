@@ -6,14 +6,14 @@ driver:
   name: docker
 
 platforms:
-  # Debian 12 - Bookworm
-  - name: role-git_debian12_${MOLECULE_INSTANCE_ID}
-    image: "python:3.13.0-bookworm"
+  # Debian 13 - Trixie
+  - name: role-git_debian13_${MOLECULE_INSTANCE_ID}
+    image: "python:3.13.12-trixie"
     pre_build_image: true
 
-  # Debian 11 - Bullseye
-  - name: role-git_debian11_${MOLECULE_INSTANCE_ID}
-    image: "python:3.13.0-bullseye"
+  # Debian 12 - Bookworm
+  - name: role-git_debian12_${MOLECULE_INSTANCE_ID}
+    image: "python:3.13.12-bookworm"
     pre_build_image: true
 
 provisioner:
