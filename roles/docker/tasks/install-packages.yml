@@ -23,7 +23,9 @@
       failed_when: docker_key_id | lower not in __docker_key_info.stdout | lower
 
     - name: "Dearmor and install GPG key"
-      ansible.builtin.shell: "set -o pipefail && cat /tmp/docker.asc | gpg --dearmor -o {{ docker_key_path }}"
+      ansible.builtin.shell: |
+        set -o pipefail &&
+        cat /tmp/docker.asc | gpg --dearmor -o {{ docker_key_path }}
       args:
         executable: /bin/bash
         creates: "{{ docker_key_path }}"

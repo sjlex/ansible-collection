@@ -9,6 +9,7 @@
   ansible.builtin.set_fact:
     __fish_is_installed: "{{ __fish_binary_check.rc == 0 }}"
     __fisher_is_installed: false
+    __fisher_installed_plugins: []
 
 - name: "Check fisher and plugins"
   when: __fish_is_installed

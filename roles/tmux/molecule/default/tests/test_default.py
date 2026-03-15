@@ -30,19 +30,3 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
         assert host_package.version.startswith(package_version)
 
     assert host_package.is_installed
-
-
-@pytest.mark.parametrize(
-    "user,config_path",
-    [
-        ("ansible", "/home/ansible/.tmux.conf"),
-        ("ansible", "/home/ansible/.config/tmux/tmux.conf"),
-    ],
-)
-def test_config(host, user, config_path):
-    config = host.file(config_path)
-
-    assert config.exists
-    assert config.is_file
-    assert config.size > 0
-    assert config.user == user

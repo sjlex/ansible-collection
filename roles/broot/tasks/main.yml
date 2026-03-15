@@ -13,7 +13,3 @@
     - name: "Install packages"
       ansible.builtin.include_tasks:
         file: install-packages.yml
-
-    - name: "Configuration"
-      ansible.builtin.include_tasks:
-        file: configuration.yml

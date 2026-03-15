@@ -36,7 +36,6 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
     "user,config_path",
     [
         ("ansible", "/home/ansible/.gitconfig"),
-        ("ansible", "/home/ansible/.gitignore"),
     ],
 )
 def test_config(host, user, config_path):

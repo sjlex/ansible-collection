@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  VERSION: '1.5.0'
+  VERSION: '1.7.0'
   DOCKER_IMAGE: 'ansible-my-collection:{{.VERSION}}'
 
 env:
@@ -214,6 +214,7 @@ tasks:
           --config-file .ansible-lint.yml
           --exclude molecule.yml
           --offline
+          --format=pep8
           {{.ROOT_DIR}}/*
           {{.CLI_ARGS}}
 

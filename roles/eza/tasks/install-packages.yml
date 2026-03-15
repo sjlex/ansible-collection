@@ -23,7 +23,9 @@
       failed_when: eza_key_id | lower not in __eza_key_info.stdout | lower
 
     - name: "Dearmor and install GPG key"
-      ansible.builtin.shell: "set -o pipefail && cat /tmp/eza.asc | gpg --dearmor -o {{ eza_key_path }}"
+      ansible.builtin.shell: |
+        set -o pipefail &&
+        cat /tmp/eza.asc | gpg --dearmor -o {{ eza_key_path }}
       args:
         executable: /bin/bash
         creates: "{{ eza_key_path }}"

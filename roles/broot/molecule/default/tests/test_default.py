@@ -29,36 +29,3 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
 
         assert cmd.rc == 0
         assert cmd.stdout.startswith(f"broot {package_version}\n")
-
-
-@pytest.mark.parametrize(
-    "user,config_path",
-    [
-        ("ansible", "/home/ansible/.config/broot/conf.hjson"),
-    ],
-)
-def test_config(host, user, config_path):
-    config = host.file(config_path)
-
-    assert config.exists
-    assert config.is_file
-    assert config.size > 0
-    assert config.user == user
-    assert config.contains('default_flags: "-hipg"')
-    assert config.contains("file: skins/dark-void.hjson")
-
-
-@pytest.mark.parametrize(
-    "user,config_path",
-    [
-        ("ansible", "/home/ansible/.config/broot/verbs.hjson"),
-        ("ansible", "/home/ansible/.config/broot/skins/dark-void.hjson"),
-    ],
-)
-def test_configs(host, user, config_path):
-    config = host.file(config_path)
-
-    assert config.exists
-    assert config.is_file
-    assert config.size > 0
-    assert config.user == user

@@ -5,8 +5,8 @@
 ## Supported Operating Systems
 
 | Platform | Versions                   |
-| -------- | -------------------------- |
-| Debian   | Buster, Bullseye, Bookworm |
+| -------- |----------------------------|
+| Debian   | Bookworm - 12, Trixie - 13 |
 
 ## Install
 
@@ -40,9 +40,9 @@ tasks:
         - jethrokuan/fzf
 ```
 
-## Development and testing
+## Development and Testing
 
-### 1. Build docker image and run dev-container:
+### 1. Build Docker image and run dev-container:
 
 ```shell
 ./bin/task docker:build
@@ -75,6 +75,13 @@ molecule converge &&
 molecule idempotence &&
 molecule verify &&
 molecule destroy
+```
+
+#### 3.1 Login:
+
+```shell
+molecule login --host role-[name]_debian13_
+molecule login --host role-nvim_debian12_
 ```
 
 ### 4. Testing
