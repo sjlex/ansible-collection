@@ -103,6 +103,12 @@ task lint
 task lint:fix
 ```
 
+### 5. Clear cache and python env
+
+```shell
+task dependencies:clear
+```
+
 ## License
 
 [MIT](LICENSE)
