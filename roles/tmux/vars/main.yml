@@ -1,7 +1,14 @@
 ---
 # vars file for tmux
 
-__tmux_package_name: "tmux"
-__tmux_packages:
-  - "{{ __tmux_package_name }}"
-__tmux_dependencies: []
+__tmux_build_dependencies:
+  - libevent-dev
+  - libncurses-dev
+  - gcc
+  - make
+  - pkg-config
+  - bison
+
+__tmux_tar_filename: "tmux-{{ tmux_version }}.tar.gz"
+__tmux_src_dir: "/tmp/tmux-{{ tmux_version }}"
+__tmux_install_path: "/usr/local/bin/tmux"

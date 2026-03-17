@@ -1,10 +1,49 @@
 ---
 - name: "Install tmux"
-  become: true
-  become_user: root
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: true
-    cache_valid_time: 3600
-  loop: "{{ __tmux_packages }}"
+  when: not __tmux_is_installed
+  block:
+    - name: "Install from source"
+      block:
+        - name: "Install build dependencies"
+          become: true
+          become_user: root
+          ansible.builtin.apt:
+            name: "{{ __tmux_build_dependencies }}"
+            state: present
+            update_cache: yes
+
+        - name: "Download tmux source"
+          ansible.builtin.get_url:
+            url: "{{ tmux_source_url }}"
+            dest: "/tmp/{{ __tmux_tar_filename }}"
+            mode: "0644"
+
+        - name: "Extract tmux source"
+          become: true
+          become_user: root
+          ansible.builtin.unarchive:
+            src: "/tmp/{{ __tmux_tar_filename }}"
+            dest: "/tmp"
+            remote_src: true
+
+        - name: "Build and install tmux"
+          become: true
+          become_user: root
+          ansible.builtin.shell: |
+            ./configure &&
+            make &&
+            make install
+          args:
+            chdir: "{{ __tmux_src_dir }}"
+            creates: "{{ __tmux_install_path }}"
+
+      always:
+        - name: "Remove tmp files"
+          become: true
+          become_user: root
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - "/tmp/{{ __tmux_tar_filename }}"
+            - "{{ __tmux_src_dir }}"

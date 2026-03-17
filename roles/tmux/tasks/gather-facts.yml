@@ -1,0 +1,16 @@
+---
+- name: "Get __tmux_is_installed"
+  block:
+    - name: "Get current tmux version"
+      ansible.builtin.command: tmux -V
+      register: __tmux_version_check
+      changed_when: false
+      failed_when: false
+
+    - name: "Set facts for version comparison"
+      ansible.builtin.set_fact:
+        __tmux_is_installed: >-
+          {{
+            __tmux_version_check.rc == 0 and
+            tmux_version in __tmux_version_check.stdout
+          }}
