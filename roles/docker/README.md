@@ -19,10 +19,6 @@ Role Variables
 
 `docker_repo_url`: A source string for the repository
 
-`docker_host_tcp`: Use daemon socket (default: false)
-
-`docker_host_url`: Daemon socket to connect to (default: tcp://localhost:2375)
-
 Dependencies
 ------------
 

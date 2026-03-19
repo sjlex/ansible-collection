@@ -6,6 +6,3 @@ docker_key_url: 'https://download.docker.com/linux/{{ ansible_facts["distributio
 docker_key_path: "/etc/apt/keyrings/docker.gpg"
 
 docker_repo_url: 'https://download.docker.com/linux/{{ ansible_facts["distribution"] | lower }}'
-
-docker_host_tcp: false
-docker_host_url: "tcp://localhost:2375"
