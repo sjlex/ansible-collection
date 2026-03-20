@@ -64,7 +64,7 @@ cd roles/fish
 Run molecule test:
 
 ```shell
-molecule test
+molecule test --all
 ```
 
 or
