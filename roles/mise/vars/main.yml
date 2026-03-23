@@ -1,0 +1,7 @@
+---
+# vars file for mise
+
+__mise_package_name: "mise"
+__mise_packages:
+  - "{{ __mise_package_name }}"
+__mise_dependencies: []

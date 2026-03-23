@@ -1,0 +1,68 @@
+---
+- name: "Install mise"
+  when: not __mise_is_installed
+  block:
+    - name: "Install from github"
+      block:
+        - name: "Create tmp dir"
+          become: true
+          become_user: root
+          ansible.builtin.file:
+            path: "/tmp/mise"
+            state: directory
+
+        - name: "Download archive"
+          become: true
+          become_user: root
+          ansible.builtin.get_url:
+            url: "{{ mise_package_url }}"
+            dest: "/tmp/mise/mise.tar.gz"
+            checksum: "sha512:{{ mise_package_checksum }}"
+            mode: "0644"
+
+        - name: "Extract archive"
+          become: true
+          become_user: root
+          ansible.builtin.unarchive:
+            src: "/tmp/mise/mise.tar.gz"
+            dest: "/tmp/mise"
+            remote_src: true
+
+        - name: "Copy mise"
+          block:
+            - name: "Copy mise"
+              become: true
+              become_user: root
+              ansible.builtin.copy:
+                src: "/tmp/mise/mise/bin/mise"
+                dest: "/usr/local/bin"
+                remote_src: true
+                mode: "0755"
+
+            - name: "Copy mise man pages"
+              become: true
+              become_user: root
+              ansible.builtin.copy:
+                src: "/tmp/mise/mise/man/"
+                dest: "/usr/local/share/man/"
+                remote_src: true
+                directory_mode: "0755"
+                mode: "0644"
+
+            - name: "Copy mise share files"
+              become: true
+              become_user: root
+              ansible.builtin.copy:
+                src: "/tmp/mise/mise/share/"
+                dest: "/usr/share/"
+                remote_src: true
+                directory_mode: "0755"
+                mode: "0644"
+
+      always:
+        - name: "Remove tmp files"
+          become: true
+          become_user: root
+          ansible.builtin.file:
+            path: "/tmp/mise"
+            state: absent
