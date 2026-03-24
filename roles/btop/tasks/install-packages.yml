@@ -13,7 +13,7 @@
       loop:
         - make
 
-    - name: "Install from git"
+    - name: "Install from github"
       block:
         - name: "Download and extract package"
           become: true

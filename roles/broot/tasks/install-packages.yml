@@ -2,7 +2,7 @@
 - name: "Install broot"
   when: not __broot_is_installed
   block:
-    - name: "Install from git"
+    - name: "Install from github"
       block:
         - name: "Create tmp dir"
           become: true

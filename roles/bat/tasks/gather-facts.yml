@@ -1,13 +1,16 @@
 ---
 - name: "Get __bat_is_installed"
   block:
-    - name: "Gather the package facts"
-      ansible.builtin.package_facts:
-        manager: auto
+    - name: "Check if bat is installed"
+      ansible.builtin.command: "dpkg-query -W -f='${Version}' {{ __bat_package_name }}"
+      register: __bat_dpkg_check
+      failed_when: false
+      changed_when: false
 
-    - name: "Set facts"
+    - name: "Set facts for version comparison"
       ansible.builtin.set_fact:
-        __bat_is_installed: '{{
-          __bat_package_name in ansible_facts.packages and
-          ansible_facts.packages[__bat_package_name][0].version == bat_package_version
-        }}'
+        __bat_is_installed: >-
+          {{
+            __bat_dpkg_check.rc == 0 and
+            bat_package_version in __bat_dpkg_check.stdout
+          }}
