@@ -2,7 +2,7 @@
 - name: "Install mise"
   when: not __mise_is_installed
   block:
-    - name: "Install from github"
+    - name: "Install from install.sh"
       block:
         - name: "Create tmp dir"
           become: true
@@ -11,58 +11,34 @@
             path: "/tmp/mise"
             state: directory
 
-        - name: "Download archive"
+        - name: "Import GPG key"
           become: true
           become_user: root
-          ansible.builtin.get_url:
-            url: "{{ mise_package_url }}"
-            dest: "/tmp/mise/mise.tar.gz"
-            checksum: "sha512:{{ mise_package_checksum }}"
-            mode: "0644"
+          ansible.builtin.command:
+            cmd: "gpg --keyserver hkps://keys.openpgp.org --recv-keys {{ mise_key }}"
+          changed_when: false
 
-        - name: "Extract archive"
+        - name: "Download and verify install script"
           become: true
           become_user: root
-          ansible.builtin.unarchive:
-            src: "/tmp/mise/mise.tar.gz"
-            dest: "/tmp/mise"
-            remote_src: true
+          ansible.builtin.shell:
+            cmd: "curl -fsSL {{ mise_package_url }} | gpg --decrypt > /tmp/mise/install.sh"
+          changed_when: false
 
-        - name: "Copy mise"
-          block:
-            - name: "Copy mise"
-              become: true
-              become_user: root
-              ansible.builtin.copy:
-                src: "/tmp/mise/mise/bin/mise"
-                dest: "/usr/local/bin"
-                remote_src: true
-                mode: "0755"
-
-            - name: "Copy mise man pages"
-              become: true
-              become_user: root
-              ansible.builtin.copy:
-                src: "/tmp/mise/mise/man/"
-                dest: "/usr/local/share/man/"
-                remote_src: true
-                directory_mode: "0755"
-                mode: "0644"
-
-            - name: "Copy mise share files"
-              become: true
-              become_user: root
-              ansible.builtin.copy:
-                src: "/tmp/mise/mise/share/"
-                dest: "/usr/share/"
-                remote_src: true
-                directory_mode: "0755"
-                mode: "0644"
-
-      always:
-        - name: "Remove tmp files"
+        - name: "Run install.sh"
           become: true
           become_user: root
-          ansible.builtin.file:
-            path: "/tmp/mise"
-            state: absent
+          ansible.builtin.command:
+            cmd: "sh /tmp/mise/install.sh"
+          environment:
+            MISE_VERSION: "v{{ mise_package_version }}"
+            MISE_INSTALL_PATH: "/usr/local/bin/mise"
+          changed_when: true
+
+  always:
+    - name: "Remove tmp files"
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/tmp/mise"
+        state: absent

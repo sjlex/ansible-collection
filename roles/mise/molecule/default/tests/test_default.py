@@ -16,8 +16,8 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "trixie", "mise", "2026.3.13"),
-        ("debian", "bookworm", "mise", "2026.3.13"),
+        ("debian", "trixie", "mise", "2026.3.15"),
+        ("debian", "bookworm", "mise", "2026.3.15"),
     ],
 )
 def test_package_is_installed(host, os_name, os_codename, package_name, package_version):
@@ -29,11 +29,3 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
 
         assert cmd.rc == 0
         assert package_version in cmd.stdout
-
-
-def test_man_page_is_installed(host):
-    man_page = host.file("/usr/local/share/man/man1/mise.1")
-
-    assert man_page.exists
-    assert man_page.is_file
-    assert man_page.size > 0

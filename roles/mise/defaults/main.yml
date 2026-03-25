@@ -1,6 +1,6 @@
 ---
 # defaults file for mise
 
-mise_package_version: "2026.3.13"
-mise_package_url: "https://github.com/jdx/mise/releases/download/v{{ mise_package_version }}/mise-v{{ mise_package_version }}-linux-x64.tar.gz"
-mise_package_checksum: "0162286fd71a8fe0b7c8024d886348551a69fdcb9908549369efc47e29deb97b3f683298b54c46654d7f110052cb89e0b68b58a2f4b03dc8b2eb7c1bde926739"
+mise_package_version: "2026.3.15"
+mise_package_url: "https://mise.jdx.dev/install.sh.sig"
+mise_key: "24853EC9F655CE80B48E6C3A8B81C9D17413A06D"

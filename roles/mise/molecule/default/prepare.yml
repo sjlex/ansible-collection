@@ -12,6 +12,8 @@
         cache_valid_time: 3600
       loop:
         - sudo
+        - gnupg
+        - curl
 
     - name: "Create a login user"
       become: true
