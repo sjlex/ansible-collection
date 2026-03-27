@@ -15,6 +15,7 @@
       when:
         - _docker_context_check_user.skipped is not defined or not _docker_context_check_user.skipped
         - item.rc != 0
+      changed_when: true
 
     - name: "Check if docker context exists for root"
       ansible.builtin.command: docker context inspect "{{ item.name }}"
@@ -33,6 +34,7 @@
       when:
         - docker_context_check_root.skipped is not defined or not docker_context_check_root.skipped
         - item.rc != 0
+      changed_when: true
 
 - name: Set default Docker context
   when: docker_context_default | default('') | length > 0
@@ -48,6 +50,7 @@
       when:
         - _docker_context_current_user.skipped is not defined or not _docker_context_current_user.skipped
         - _docker_context_current_user.stdout | default('') != docker_context_default
+      changed_when: true
 
     - name: "Get current docker context for root"
       ansible.builtin.command: docker context show
@@ -64,3 +67,4 @@
       when:
         - _docker_context_current_root.skipped is not defined or not _docker_context_current_root.skipped
         - _docker_context_current_root.stdout | default('') != docker_context_default
+      changed_when: true

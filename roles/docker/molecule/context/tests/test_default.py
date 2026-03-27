@@ -13,7 +13,7 @@ import pytest
 def test_context(host, user, context_name, endpoint):
     cmd_docker_ls = host.run(
         f"sudo su - {user} -c %s",
-        f"""
+        """
         docker context ls
         """,
     )
@@ -36,7 +36,7 @@ def test_context(host, user, context_name, endpoint):
 
     cmd_docker_default = host.run(
         f"sudo su - {user} -c %s",
-        f"""
+        """
         docker context show
         """,
     )

@@ -10,6 +10,7 @@
           ansible.builtin.file:
             path: "/tmp/mise"
             state: directory
+            mode: "0755"
 
         - name: "Import GPG key"
           become: true
@@ -18,12 +19,21 @@
             cmd: "gpg --keyserver hkps://keys.openpgp.org --recv-keys {{ mise_key }}"
           changed_when: false
 
-        - name: "Download and verify install script"
+        - name: "Download signed install script"
           become: true
           become_user: root
-          ansible.builtin.shell:
-            cmd: "curl -fsSL {{ mise_package_url }} | gpg --decrypt > /tmp/mise/install.sh"
-          changed_when: false
+          ansible.builtin.get_url:
+            url: "{{ mise_package_url }}"
+            dest: "/tmp/mise/install.sh.sig"
+            mode: "0644"
+          changed_when: true
+
+        - name: "Verify and decrypt install script"
+          become: true
+          become_user: root
+          ansible.builtin.command:
+            cmd: "gpg --decrypt --output /tmp/mise/install.sh /tmp/mise/install.sh.sig"
+          changed_when: true
 
         - name: "Run install.sh"
           become: true
