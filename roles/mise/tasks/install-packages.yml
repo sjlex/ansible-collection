@@ -16,7 +16,7 @@
           become: true
           become_user: root
           ansible.builtin.command:
-            cmd: "gpg --keyserver hkps://keys.openpgp.org --recv-keys {{ mise_key }}"
+            cmd: "gpg --keyserver hkp://keys.openpgp.org:80 --recv-keys {{ mise_key }}"
           changed_when: false
 
         - name: "Download signed install script"
