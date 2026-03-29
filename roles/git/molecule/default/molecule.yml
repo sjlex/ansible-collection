@@ -28,6 +28,7 @@ provisioner:
         git_user_signingkey: "1234"
         git_commit_gpgsign: "true"
         git_tag_gpgsign: "false"
+        git_gpg_program: "/c/Program Files (x86)/GnuPG/bin/gpg.exe"
 
 verifier:
   name: testinfra

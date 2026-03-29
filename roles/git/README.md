@@ -25,6 +25,8 @@ Role Variables
 
 `git_core_filemode`: Filemode (default: false)
 
+`git_gpg_program`: GPG program path
+
 Dependencies
 ------------
 

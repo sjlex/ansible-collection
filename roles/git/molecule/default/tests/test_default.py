@@ -57,6 +57,7 @@ def test_config(host, user, config_path):
         ("ansible", "user.signingkey"),
         ("ansible", "commit.gpgsign"),
         ("ansible", "tag.gpgsign"),
+        ("ansible", "gpg.program"),
     ],
 )
 def test_git_get_config(host, user, config_param):
@@ -89,3 +90,6 @@ def test_git_get_config(host, user, config_param):
 
     if config_param == "core.filemode":
         assert cmd.stdout.startswith("false")
+
+    if config_param == "gpg.program":
+        assert cmd.stdout.startswith("/c/Program Files (x86)/GnuPG/bin/gpg.exe")
