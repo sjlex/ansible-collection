@@ -3,6 +3,7 @@ name = "ansible-my-collection"
 description = "An Ansible Collection of roles."
 version = "1.7.0"
 license = "MIT"
+package-mode = false
 
 authors = ["Sergei Aleksandrov <sergei.a.aleks@gmail.com>"]
 
