@@ -1,14 +1,56 @@
-# ansible-my-collection
+<h3 id="ansible-collection" align="center">
+  <br>
+    <img src="assets/logo.png" alt="Ansible Collection Logo" width="160">
+  <br>
+  Ansible Collection
+  <br>
+</h3>
 
-> An Ansible Collection of roles.
+##
 
-## Supported Operating Systems
+<div align="center">
+  <p>A personal collection of Ansible roles.</p>
+</div>
+
+<p align="center">
+  <a href="https://github.com/sjlex/ansible-my-collection/releases/latest"><img alt="Version" src="https://img.shields.io/github/v/release/sjlex/ansible-my-collection?labelColor=black&color=black"></a>&nbsp;
+  <a href="https://github.com/sjlex/ansible-my-collection/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/sjlex/ansible-my-collection?labelColor=black&color=black"></a>&nbsp;
+</p>
+
+## Table of contents
+
+- [Ansible Collection](#ansible-collection)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Development](#development)
+    - [Dev-Container](#dev-container)
+      - [Build](#build-the-docker-image)
+      - [Run](#run-the-docker-container)
+    - [Install dependencies](#install-dependencies)
+    - [Testing](#testing)
+      - [Run all tests](#run-tests-for-all-roles)
+      - [Run tests for a specific role](#run-tests-for-a-specific-role)
+      - [Run tests manually](#run-tests-manually)
+      - [Login](#login)
+    - [Linting](#linting)
+    - [Clear](#clear)
+  - [License](#license)
+  - [Third-Party Assets](#third-party-assets)
+
+## Getting started
+
+### Prerequisites
+
+Supported Operating Systems:
 
 | Platform | Versions                   |
 | -------- |----------------------------|
 | Debian   | Bookworm - 12, Trixie - 13 |
 
-## Install
+### Installation
 
 - requirements.yml
 
@@ -17,98 +59,127 @@
     - name: sjlex.collection
       source: https://github.com/sjlex/ansible-my-collection
       type: git
-  ```
+    ```
 
 ## Usage
 
-```yml
-roles:
-  - role: sjlex.collection.fish
-```
+- Playbooks:
 
-or
+  ```yml
+  roles:
+    - role: sjlex.collection.fish
+  ```
 
-```yml
-tasks:
-  - name: "Install packages"
-    ansible.builtin.include_role:
-      name: "sjlex.collection.fish"
-    vars:
-      fisher_plugins:
-        - sjlex/plain-prompt
-        - jethrokuan/z
-        - jethrokuan/fzf
-```
+- Roles:
 
-## Development and Testing
+  ```yml
+  tasks:
+    - name: "Install package"
+      ansible.builtin.include_role:
+        name: "sjlex.collection.fish"
+      vars:
+        fisher_plugins:
+          - sjlex/plain-prompt
+          - jethrokuan/z
+          - jethrokuan/fzf
+  ```
 
-### 1. Build Docker image and run dev-container:
+## Development
+
+### Dev-Container
+
+#### Build the Docker image:
 
 ```shell
 ./bin/task docker:build
+```
+
+#### Run the Docker container:
+
+```shell
 ./bin/task docker:run
 ```
 
-### 2. Install dev dependencies
+### Install dependencies:
 
 ```shell
 task dependencies:dev:install
 ```
 
-### 3. Development
+### Testing
 
-```shell
-cd roles/fish
-```
-
-Run molecule test:
-
-```shell
-molecule test --all
-```
-
-or
-
-```shell
-molecule create &&
-molecule converge &&
-molecule idempotence &&
-molecule verify &&
-molecule destroy
-```
-
-#### 3.1 Login:
-
-```shell
-molecule login --host role-[name]_debian13_
-molecule login --host role-nvim_debian12_
-```
-
-### 4. Testing
+#### Run tests for all roles:
 
 ```shell
 task test:all
 ```
 
-or (specific role):
+#### Run tests for a specific role:
 
 ```shell
 task test:role -- fish
 ```
 
-### 5. Linting
+or:
+
+```shell
+cd roles/fish
+```
+
+```shell
+molecule test --all
+```
+
+#### Run tests manually:
+
+```shell
+cd roles/fish
+```
+
+```shell
+molecule create &&
+molecule converge &&
+molecule verify &&
+molecule idempotence &&
+molecule destroy
+```
+
+#### Login
+
+```shell
+molecule list
+```
+
+```shell
+molecule login --host role-fish_debian13_
+```
+
+### Linting
 
 ```shell
 task lint
+```
+
+```shell
 task lint:fix
 ```
 
-### 5. Clear cache and python env
+### Clear
+
+- Cache and Python environment cleanup:
 
 ```shell
-task dependencies:clear
+task clear
 ```
 
 ## License
 
-[MIT](LICENSE)
+[MIT License](LICENSE)
+
+## Third-Party Assets
+
+This project may include or reference third-party assets under their own licenses. Any such assets are used in accordance with their licensing terms.
+
+- [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
+  - Source: [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)
+  - License: [SIL Open Font License 1.1](https://fonts.google.com/specimen/JetBrains+Mono/license)
