@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "ansible-my-collection"
-description = "An Ansible Collection of roles."
+name = "ansible-collection"
+description = "A personal collection of Ansible roles."
 version = "1.7.0"
 license = "MIT"
 package-mode = false
@@ -17,9 +17,9 @@ keywords = [
   "debian"
 ]
 
-homepage = "https://github.com/sjlex/ansible-my-collection"
-repository = "https://github.com/sjlex/ansible-my-collection"
-documentation = "https://github.com/sjlex/ansible-my-collection/blob/main/README.md"
+homepage = "https://github.com/sjlex/ansible-collection"
+repository = "https://github.com/sjlex/ansible-collection"
+documentation = "https://github.com/sjlex/ansible-collection/blob/main/README.md"
 
 [tool.poetry.dependencies]
 python = "^3.13"

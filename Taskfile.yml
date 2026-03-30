@@ -2,7 +2,7 @@ version: '3'
 
 vars:
   VERSION: '1.7.0'
-  DOCKER_IMAGE: 'ansible-my-collection:{{.VERSION}}'
+  DOCKER_IMAGE: 'ansible-collection:{{.VERSION}}'
 
 env:
   MOLECULE_INSTANCE_ID:

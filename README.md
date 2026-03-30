@@ -13,8 +13,8 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/sjlex/ansible-my-collection/releases/latest"><img alt="Version" src="https://img.shields.io/github/v/release/sjlex/ansible-my-collection?labelColor=black&color=black"></a>&nbsp;
-  <a href="https://github.com/sjlex/ansible-my-collection/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/sjlex/ansible-my-collection?labelColor=black&color=black"></a>&nbsp;
+  <a href="https://github.com/sjlex/ansible-collection/releases/latest"><img alt="Version" src="https://img.shields.io/github/v/release/sjlex/ansible-collection?labelColor=black&color=black"></a>&nbsp;
+  <a href="https://github.com/sjlex/ansible-collection/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/sjlex/ansible-collection?labelColor=black&color=black"></a>&nbsp;
 </p>
 
 ## Table of contents
@@ -57,7 +57,7 @@ Supported Operating Systems:
   ```yml
   collections:
     - name: sjlex.collection
-      source: https://github.com/sjlex/ansible-my-collection
+      source: https://github.com/sjlex/ansible-collection
       type: git
     ```
 
