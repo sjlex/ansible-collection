@@ -36,7 +36,7 @@
       - [Run tests manually](#run-tests-manually)
       - [Login](#login)
     - [Linting](#linting)
-    - [Clear](#clear)
+    - [Clear All](#clear-all)
   - [License](#license)
   - [Third-Party Assets](#third-party-assets)
 
@@ -164,7 +164,7 @@ task lint
 task lint:fix
 ```
 
-### Clear
+### Clear All
 
 - Cache and Python environment cleanup:
 
