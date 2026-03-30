@@ -1,7 +1,7 @@
 namespace: sjlex
 name: collection
-version: 1.1.0
-description: An Ansible Collection of roles.
+version: 1.7.0
+description: A personal collection of Ansible roles.
 
 authors:
   - Sergei Aleksandrov <sergei.a.aleks@gmail.com>
@@ -17,12 +17,12 @@ tags:
   - linux
   - debian
 
-repository: https://github.com/sjlex/ansible-my-collection
-documentation: https://github.com/sjlex/ansible-my-collection/blob/main/README.md
-homepage: https://github.com/sjlex/ansible-my-collection
-issues: https://github.com/sjlex/ansible-my-collection/issues
+repository: https://github.com/sjlex/ansible-collection
+documentation: https://github.com/sjlex/ansible-collection/blob/main/README.md
+homepage: https://github.com/sjlex/ansible-collection
+issues: https://github.com/sjlex/ansible-collection/issues
 
 build_ignore: []
 
 dependencies:
-  community.general: ">=9.5.0"
+  community.general: ">=12.4.0"

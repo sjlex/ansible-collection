@@ -11,7 +11,7 @@ None
 Role Variables
 --------------
 
-None
+`tmux_version`: Tmux version
 
 Dependencies
 ------------
@@ -23,7 +23,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: sjlex.tmux }
+         - { role: sjlex.tmux, tmux_version: '3.3a' }
 
 License
 -------

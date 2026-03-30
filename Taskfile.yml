@@ -1,8 +1,8 @@
 version: '3'
 
 vars:
-  VERSION: '1.1.0'
-  DOCKER_IMAGE: 'ansible-my-collection:{{.VERSION}}'
+  VERSION: '1.7.0'
+  DOCKER_IMAGE: 'ansible-collection:{{.VERSION}}'
 
 env:
   MOLECULE_INSTANCE_ID:
@@ -62,6 +62,12 @@ tasks:
         ansible-galaxy install
           -r requirements.yml
           {{.CLI_ARGS}}
+
+  "dependencies:clear":
+    desc: "Clear all dependencies"
+    cmds:
+      - poetry env remove --all
+      - poetry cache clear --no-interaction --all .
 
   # ----------------------------------------------------------------------------
   # Ansible
@@ -213,8 +219,16 @@ tasks:
         ansible-lint
           --config-file .ansible-lint.yml
           --exclude molecule.yml
+          --offline
+          --format=pep8
           {{.ROOT_DIR}}/*
           {{.CLI_ARGS}}
+
+  "lint:ansible-lint:clear":
+    desc: "Clear ansible-lint cache"
+    cmds:
+      - rm -rf .cache/ansible-lint
+      - rm -rf .ansible
 
   "lint:ruff":
     desc: "Linting (ruff)"
@@ -228,10 +242,14 @@ tasks:
     desc: "Reformat (ruff)"
     cmds:
       - poetry run
-        ruff
-          --fix
+        ruff check --fix
           {{.ROOT_DIR}}
           {{.CLI_ARGS}}
+
+  "lint:ruff:clear":
+    desc: "Clear ruff cache"
+    cmds:
+      - rm -rf .ruff_cache
 
   "lint:black":
     desc: "Linting (black)"
@@ -252,3 +270,19 @@ tasks:
           --line-length=120
           {{.ROOT_DIR}}
           {{.CLI_ARGS}}
+
+  # ----------------------------------------------------------------------------
+  # Clear
+  # ----------------------------------------------------------------------------
+
+  "clear":
+    desc: "Clear"
+    deps:
+      - task: "clear:all"
+
+  "clear:all":
+    desc: "Clear all"
+    cmds:
+      - task: "lint:ansible-lint:clear"
+      - task: "lint:ruff:clear"
+      - task: "dependencies:clear"

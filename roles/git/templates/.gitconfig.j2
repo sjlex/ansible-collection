@@ -1,5 +1,5 @@
 [core]
-  excludesfile = {{ ansible_env["HOME"] }}/.gitignore
+  excludesfile = "{{ ansible_facts["env"]["HOME"] }}/.gitignore"
 {% if git_core_autocrlf != '' %}
   autocrlf = {{ git_core_autocrlf }}
 {% endif %}
@@ -9,13 +9,13 @@
 
 [user]
 {% if git_user_name != '' %}
-  name = {{ git_user_name }}
+  name = "{{ git_user_name }}"
 {% endif %}
 {% if git_user_email != '' %}
-  email = {{ git_user_email }}
+  email = "{{ git_user_email }}"
 {% endif %}
 {% if git_user_signingkey != '' %}
-  signingkey = {{ git_user_signingkey }}
+  signingkey = "{{ git_user_signingkey }}"
 {% endif %}
 
 [commit]
@@ -26,4 +26,9 @@
 [tag]
 {% if git_tag_gpgsign != '' %}
   gpgsign = {{ git_tag_gpgsign }}
+{% endif %}
+
+[gpg]
+{% if git_gpg_program != '' %}
+  program = "{{ git_gpg_program }}"
 {% endif %}

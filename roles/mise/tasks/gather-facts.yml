@@ -1,0 +1,16 @@
+---
+- name: "Get __mise_is_installed"
+  block:
+    - name: "Get current mise version"
+      ansible.builtin.command: "/usr/local/bin/mise --version"
+      register: __mise_version_check
+      changed_when: false
+      failed_when: false
+
+    - name: "Set facts for version comparison"
+      ansible.builtin.set_fact:
+        __mise_is_installed: >-
+          {{
+            __mise_version_check.rc == 0 and
+            mise_package_version in __mise_version_check.stdout
+          }}

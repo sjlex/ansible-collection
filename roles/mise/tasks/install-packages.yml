@@ -1,0 +1,54 @@
+---
+- name: "Install mise"
+  when: not __mise_is_installed
+  block:
+    - name: "Install from install.sh"
+      block:
+        - name: "Create tmp dir"
+          become: true
+          become_user: root
+          ansible.builtin.file:
+            path: "/tmp/mise"
+            state: directory
+            mode: "0755"
+
+        - name: "Import GPG key"
+          become: true
+          become_user: root
+          ansible.builtin.command:
+            cmd: "gpg --keyserver hkp://keys.openpgp.org:80 --recv-keys {{ mise_key }}"
+          changed_when: false
+
+        - name: "Download signed install script"
+          become: true
+          become_user: root
+          ansible.builtin.get_url:
+            url: "{{ mise_package_url }}"
+            dest: "/tmp/mise/install.sh.sig"
+            mode: "0644"
+          changed_when: true
+
+        - name: "Verify and decrypt install script"
+          become: true
+          become_user: root
+          ansible.builtin.command:
+            cmd: "gpg --decrypt --output /tmp/mise/install.sh /tmp/mise/install.sh.sig"
+          changed_when: true
+
+        - name: "Run install.sh"
+          become: true
+          become_user: root
+          ansible.builtin.command:
+            cmd: "sh /tmp/mise/install.sh"
+          environment:
+            MISE_VERSION: "v{{ mise_package_version }}"
+            MISE_INSTALL_PATH: "/usr/local/bin/mise"
+          changed_when: true
+
+  always:
+    - name: "Remove tmp files"
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/tmp/mise"
+        state: absent

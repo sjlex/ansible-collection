@@ -3,23 +3,55 @@
   become: true
   become_user: root
   block:
-    - name: "Get apt signing key"
-      ansible.builtin.apt_key:
-        id: "{{ docker_key_id }}"
-        url: "{{ docker_key_url }}"
-        keyring: "{{ docker_key_path }}"
-        state: present
+    - name: "Ensure keyrings directory exists"
+      ansible.builtin.file:
+        path: "{{ docker_key_path | dirname }}"
+        state: directory
+        mode: "0755"
 
-    - name: "Add apt source"
-      ansible.builtin.apt_repository:
-        filename: "docker"
+    - name: "Download Docker GPG key to a temporary file"
+      ansible.builtin.get_url:
+        url: "{{ docker_key_url }}"
+        dest: "/tmp/docker.asc"
+        mode: '0644'
+      changed_when: false
+
+    - name: "Verify GPG key fingerprint"
+      ansible.builtin.command: "gpg --show-keys --with-fingerprint --with-colons /tmp/docker.asc"
+      register: __docker_key_info
+      changed_when: false
+      failed_when: docker_key_id | lower not in __docker_key_info.stdout | lower
+
+    - name: "Dearmor and install GPG key"
+      ansible.builtin.shell: |
+        set -o pipefail &&
+        cat /tmp/docker.asc | gpg --dearmor -o {{ docker_key_path }}
+      args:
+        executable: /bin/bash
+        creates: "{{ docker_key_path }}"
+
+    - name: "Remove temporary key file"
+      ansible.builtin.file:
+        path: "/tmp/docker.asc"
+        state: absent
+      changed_when: false
+
+    - name: "Install dependencies for deb822_repository"
+      ansible.builtin.apt:
+        name: python3-debian
         state: present
-        mode: 0755
-        repo: >
-          deb [arch=amd64 signed-by={{ docker_key_path }}]
-          {{ docker_repo_url }}
-          {{ ansible_distribution_release }}
-          stable
+        update_cache: true
+
+    - name: "Add Docker repository (DEB822)"
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: [deb]
+        uris: ["{{ docker_repo_url }}"]
+        suites: ["{{ ansible_facts['distribution_release'] }}"]
+        components: [stable]
+        architectures: [amd64]
+        signed_by: "{{ docker_key_path }}"
+        state: present
 
 - name: "Install docker"
   become: true
@@ -28,7 +60,6 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-    cache_valid_time: 3600
   loop: "{{ __docker_packages }}"
 
 - name: "Install dependencies"

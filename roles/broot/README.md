@@ -25,7 +25,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: sjlex.broot, broot_package_version: '1.24.1' }
+         - { role: sjlex.broot, broot_package_version: '1.55.0' }
 
 License
 -------

@@ -1,43 +1,34 @@
 ---
-- name: "Get __fisher_is_installed"
-  block:
-    - name: "Check if fisher is installed"
-      ansible.builtin.shell: |
-        fisher --version
-      args:
-        executable: "/usr/bin/fish"
-      register: __fisher_is_installed
-      failed_when: false
-      changed_when: "__fisher_is_installed.rc >= 1"
-
-    - name: "Set facts"
-      ansible.builtin.set_fact:
-        __fisher_is_installed: "{{ not __fisher_is_installed.rc }}"
-
 - name: "Install fisher"
-  when: not __fisher_is_installed
+  when:
+    - __fish_is_installed
+    - not __fisher_is_installed
   block:
-    - name: "Download install-script"
-      become: true
-      become_user: root
+    - name: "Download fisher install script"
       ansible.builtin.get_url:
         url: "{{ fisher_url }}"
         dest: "/tmp/fisher.fish"
-        mode: 0777
+        mode: '0777'
 
     - name: "Install fisher"
       ansible.builtin.shell: |
         source /tmp/fisher.fish &&
         fisher install {{ fisher_package_name }}
       args:
-        executable: "/usr/bin/fish"
-      register: __fish_fisher_install_rg
-      changed_when: __fish_fisher_install_rg.rc != 0
+        executable: "{{ __fish_binary_path }}"
+      register: __fisher_install_res
+      changed_when: true
+
+    - name: "Update fisher fact after install"
+      ansible.builtin.set_fact:
+        __fisher_is_installed: true
+      when: __fisher_install_res is succeeded
 
   always:
-    - name: "Remove tmp files"
+    - name: "Remove temporary fisher script"
       become: true
       become_user: root
       ansible.builtin.file:
         path: "/tmp/fisher.fish"
         state: absent
+      changed_when: false

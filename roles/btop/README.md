@@ -25,7 +25,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: sjlex.btop, btop_package_version: '1.2.13' }
+         - { role: sjlex.btop, btop_package_version: '1.4.6' }
 
 License
 -------

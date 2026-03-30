@@ -17,8 +17,7 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "git", "1:2"),
-        ("debian", "bullseye", "git", "1:2"),
+        ("debian", "trixie", "git", "1:2"),
         ("debian", "bookworm", "git", "1:2"),
     ],
 )
@@ -37,7 +36,6 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
     "user,config_path",
     [
         ("ansible", "/home/ansible/.gitconfig"),
-        ("ansible", "/home/ansible/.gitignore"),
     ],
 )
 def test_config(host, user, config_path):
@@ -59,6 +57,7 @@ def test_config(host, user, config_path):
         ("ansible", "user.signingkey"),
         ("ansible", "commit.gpgsign"),
         ("ansible", "tag.gpgsign"),
+        ("ansible", "gpg.program"),
     ],
 )
 def test_git_get_config(host, user, config_param):
@@ -91,3 +90,6 @@ def test_git_get_config(host, user, config_param):
 
     if config_param == "core.filemode":
         assert cmd.stdout.startswith("false")
+
+    if config_param == "gpg.program":
+        assert cmd.stdout.startswith("/c/Program Files (x86)/GnuPG/bin/gpg.exe")

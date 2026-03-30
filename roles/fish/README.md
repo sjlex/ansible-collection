@@ -15,7 +15,7 @@ Role Variables
 
 `fish_key_url`: The URL to retrieve gpg key
 
-`fish_key_path`: The keyring path (default: /usr/share/keyrings/fish.gpg)
+`fish_key_path`: The keyring path (default: /etc/apt/trusted.gpg.d/shells_fish_release_4.gpg)
 
 `fish_repo_url`: A source string for the repository
 
@@ -25,7 +25,7 @@ Role Variables
 
 `fisher_url`: Fisher repository
 
-`fisher_install_plugins`: Install plugins
+`fisher_install_plugins`: Install plugins (default: true)
 
 `fisher_plugins`: Plugins list
 

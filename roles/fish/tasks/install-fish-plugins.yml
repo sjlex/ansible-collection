@@ -1,45 +1,21 @@
 ---
-- name: "Gather facts"
-  block:
-    - name: "Get __fisher_is_installed"
-      block:
-        - name: "Check if fisher is installed"
-          ansible.builtin.shell: |
-            fisher --version
-          args:
-            executable: "/usr/bin/fish"
-          register: __fisher_is_installed
-          failed_when: false
-          changed_when: "__fisher_is_installed.rc >= 1"
+- name: "Install fish plugins"
+  when:
+    - __fish_is_installed
+    - __fisher_is_installed
+    - item not in __fisher_installed_plugins
+  ansible.builtin.shell: "fisher install {{ item }}"
+  changed_when: true
+  args:
+    executable: "{{ __fish_binary_path }}"
+  loop: "{{ fisher_plugins }}"
+  register: __fish_plugins_install_rg
 
-        - name: "Set facts"
-          ansible.builtin.set_fact:
-            __fisher_is_installed: "{{ not __fisher_is_installed.rc }}"
-
-- name: "Install plugins"
-  when: __fisher_is_installed
-  block:
-    - name: "Gather facts"
-      block:
-        - name: "Get installed plugins (user mode)"
-          ansible.builtin.shell: |
-            fisher list
-          args:
-            executable: "/usr/bin/fish"
-          register: __fisher_installed_plugins
-          failed_when: false
-          changed_when: "__fisher_installed_plugins.rc >= 1"
-
-        - name: "Set facts"
-          ansible.builtin.set_fact:
-            __fisher_installed_plugins: "{{ __fisher_installed_plugins.stdout }}"
-
-    - name: "Install plugins"
-      when: not item in __fisher_installed_plugins
-      ansible.builtin.shell: |
-        fisher install {{ item }}
-      args:
-        executable: "/usr/bin/fish"
-      register: __fish_plugins_install_rg
-      changed_when: __fish_plugins_install_rg.rc != 0
-      loop: "{{ fisher_plugins }}"
+- name: "Update installed plugins list fact"
+  ansible.builtin.set_fact:
+    __fisher_installed_plugins: "{{ (__fisher_installed_plugins + (fisher_plugins | intersect(ansible_loop_results))) | unique }}"
+  vars:
+    ansible_loop_results: "{{ __fish_plugins_install_rg.results | select('succeeded') | map(attribute='item') | list }}"
+  when: __fish_plugins_install_rg is changed
+  tags:
+    - skip_ansible_lint

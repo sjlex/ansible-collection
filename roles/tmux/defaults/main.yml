@@ -1,2 +1,5 @@
 ---
 # defaults file for tmux
+
+tmux_version: "3.5a"
+tmux_source_url: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz"

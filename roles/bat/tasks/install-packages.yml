@@ -10,7 +10,7 @@
           ansible.builtin.get_url:
             url: "{{ bat_package_url }}"
             dest: "/tmp/{{ __bat_deb_filename }}"
-            mode: 0777
+            mode: "0777"
 
         - name: "Install deb package"
           become: true

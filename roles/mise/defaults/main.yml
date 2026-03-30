@@ -1,0 +1,6 @@
+---
+# defaults file for mise
+
+mise_package_version: "2026.3.15"
+mise_package_url: "https://mise.jdx.dev/install.sh.sig"
+mise_key: "24853EC9F655CE80B48E6C3A8B81C9D17413A06D"

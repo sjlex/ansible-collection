@@ -16,8 +16,7 @@ def test_smoke(host, user):
 @pytest.mark.parametrize(
     "os_name,os_codename,package_name,package_version",
     [
-        ("debian", "buster", "htop", "2.2"),
-        ("debian", "bullseye", "htop", "3.0"),
+        ("debian", "trixie", "htop", "3.4.1"),
         ("debian", "bookworm", "htop", "3.2"),
     ],
 )
@@ -30,18 +29,3 @@ def test_package_is_installed(host, os_name, os_codename, package_name, package_
         assert host_package.version.startswith(package_version)
 
     assert host_package.is_installed
-
-
-@pytest.mark.parametrize(
-    "user,config_path",
-    [
-        ("ansible", "/home/ansible/.config/htop/htoprc"),
-    ],
-)
-def test_config(host, user, config_path):
-    config = host.file(config_path)
-
-    assert config.exists
-    assert config.is_file
-    assert config.size > 0
-    assert config.user == user

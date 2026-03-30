@@ -6,23 +6,20 @@ driver:
   name: docker
 
 platforms:
+  # Debian 13 - Trixie
+  - name: role-git_debian13_${MOLECULE_INSTANCE_ID}
+    image: "python:3.13.12-trixie"
+    pre_build_image: true
+
   # Debian 12 - Bookworm
   - name: role-git_debian12_${MOLECULE_INSTANCE_ID}
-    image: "python:3.13.0-bookworm"
-    pre_build_image: true
-
-  # Debian 11 - Bullseye
-  - name: role-git_debian11_${MOLECULE_INSTANCE_ID}
-    image: "python:3.13.0-bullseye"
-    pre_build_image: true
-
-  # Debian 10 - Buster
-  - name: role-git_debian10_${MOLECULE_INSTANCE_ID}
-    image: "python:3.11.4-buster"
+    image: "python:3.13.12-bookworm"
     pre_build_image: true
 
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../../"
   inventory:
     group_vars:
       all:
@@ -31,6 +28,7 @@ provisioner:
         git_user_signingkey: "1234"
         git_commit_gpgsign: "true"
         git_tag_gpgsign: "false"
+        git_gpg_program: "/c/Program Files (x86)/GnuPG/bin/gpg.exe"
 
 verifier:
   name: testinfra
